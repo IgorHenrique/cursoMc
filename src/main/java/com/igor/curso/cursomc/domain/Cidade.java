@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="tbl_cidade")
 public class Cidade implements Serializable {
@@ -20,9 +22,10 @@ public class Cidade implements Serializable {
 	@Id
 	@SequenceGenerator(name="sqc_cidade", sequenceName="sqc_cidade", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="sqc_cidade")
-	private Integer id;
+	private Integer idCidade;
 	private String nome;
 	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="id_estado")
 	private Estado estado;
@@ -33,17 +36,17 @@ public class Cidade implements Serializable {
 
 	public Cidade(Integer id, String nome, Estado estado) {
 		super();
-		this.id = id;
+		this.idCidade = id;
 		this.nome = nome;
 		this.estado = estado;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getIdCidade() {
+		return idCidade;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIdCidade(Integer id) {
+		this.idCidade = id;
 	}
 
 	public String getNome() {
@@ -66,7 +69,7 @@ public class Cidade implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idCidade == null) ? 0 : idCidade.hashCode());
 		return result;
 	}
 
@@ -79,10 +82,10 @@ public class Cidade implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Cidade other = (Cidade) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (idCidade == null) {
+			if (other.idCidade != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idCidade.equals(other.idCidade))
 			return false;
 		return true;
 	}

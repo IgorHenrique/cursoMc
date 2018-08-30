@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="tbl_estado")
 public class Estado implements Serializable{
@@ -22,6 +24,8 @@ public class Estado implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="sqc_estado")
 	private Integer id;
 	private String nome;
+	
+	@JsonBackReference
 	@OneToMany(mappedBy="estado")
 	private List<Cidade> cidades = new ArrayList<>();
 	
