@@ -2,10 +2,17 @@ package com.igor.curso.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="tbl_item_pedido")
 public class ItemPedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
 	private Double desconto;
