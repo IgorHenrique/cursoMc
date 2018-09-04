@@ -23,4 +23,10 @@ public class CategoriaService {
 		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 			 
 	}
+	
+	public Categoria insert(Categoria cat) {
+		cat.setId(null); //Caso o id vem preenchido o save faz um update 
+		return repo.save(cat);
+	}
+
 }
