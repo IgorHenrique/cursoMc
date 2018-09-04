@@ -12,8 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name ="categoria")
 public class Categoria implements Serializable {
@@ -26,7 +24,7 @@ public class Categoria implements Serializable {
 	private Integer codigo;
 	private String nome;
 	//Lado que eu quero que venha a lista de objetos
-	@JsonManagedReference
+	
 	@ManyToMany(mappedBy="categorias")
 	private List<Produto> produtos = new ArrayList<>();
 	
