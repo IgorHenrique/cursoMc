@@ -21,7 +21,7 @@ public class ClienteResource {
 	
 	@GetMapping("/{id}")
 	//ResponseEntity contem varias informações http
-	public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException {
+	public ResponseEntity<Cliente> find(@PathVariable Integer id) throws ObjectNotFoundException {
 		Cliente obj = service.buscar(id);
 		return ResponseEntity.ok(obj);
 	}
