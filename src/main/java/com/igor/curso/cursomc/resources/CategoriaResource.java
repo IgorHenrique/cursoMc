@@ -4,7 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -38,7 +42,8 @@ public class CategoriaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Categoria cat){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO catDto){
+		Categoria cat = service.fromDto(catDto);
 		cat = service.insert(cat);
 		URI	uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(cat.getId()).toUri();
@@ -64,6 +69,17 @@ public class CategoriaResource {
 	public ResponseEntity<List<CategoriaDTO>> findAll() throws ObjectNotFoundException {
 		List<Categoria> obj = service.findAll();
 		List<CategoriaDTO> listDto = obj.stream().map(obje -> new CategoriaDTO(obje)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@GetMapping("/page")
+	public ResponseEntity<Page<CategoriaDTO>> findPage(
+			@RequestParam(value="page", defaultValue="0") Integer page, 
+			@RequestParam(value="linesPerPage", defaultValue="24")Integer linesPerPage, 
+			@RequestParam(value="orderBy", defaultValue="nome")String orderBy, 
+			@RequestParam(value="direction", defaultValue="ASC")String direction) throws ObjectNotFoundException {
+		Page<Categoria> obj = service.findPage(page, linesPerPage, orderBy, direction);
+		Page<CategoriaDTO> listDto = obj.map(obje -> new CategoriaDTO(obje));
 		return ResponseEntity.ok().body(listDto);
 	}
 }

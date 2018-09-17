@@ -5,9 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.igor.curso.cursomc.domain.Categoria;
+import com.igor.curso.cursomc.dto.CategoriaDTO;
 import com.igor.curso.cursomc.repository.CategoriaRepository;
 import com.igor.curso.cursomc.services.exceptions.DataIntegrityException;
 
@@ -49,6 +53,16 @@ public class CategoriaService {
 		catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não pode excluir, pois existem registros associados a este.");
 		}
+	}
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),
+				orderBy);
+		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDto(CategoriaDTO objDto) {
+		return new Categoria(objDto.getCodigo(), objDto.getNome());
 	}
 
 }
